@@ -28,20 +28,18 @@ function Welcome() {
     };
 
     return (
-        <div>
+        <main>
             <h1>Login Success</h1>
             {/* Get user profile and display it on the page. */}
             <p id="WelcomeMessage">{`Welcome, ${
                 user?.name || user?.email || user?.user_id
             }!`}</p>
             <pre id="UserInfo">{JSON.stringify(user, null, 2)}</pre>
-            <a href="/update-profile">Update Profile</a>
+            {/* <a href="/update-profile">Update Profile</a>
             <br />
-            <a href="/remove-account">Remove Account</a>
-            <br />
-            <br />
+            <a href="/remove-account">Remove Account</a> */}
             <button onClick={handleLogout}>Logout</button>
-        </div>
+        </main>
     );
 }
 

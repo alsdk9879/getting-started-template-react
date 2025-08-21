@@ -21,76 +21,58 @@ const Signup = () => {
     }, [navigate]);
 
     return (
-        <div>
+        <main>
             <a href="/">Back</a>
-            <h2>Signup Page</h2>
+
             {/* When signup_confirmation option is set to true, User will be required to confirm their email address before they can login. */}
             <form
                 action="/signup-success"
                 onSubmit={(e) => {
                     skapi
-                        .signup(e.nativeEvent, { signup_confirmation: true })
+                        .signup(e.nativeEvent, {
+                            signup_confirmation: true,
+                        })
                         .catch((err) => {
                             alert(err.message);
                         });
                 }}
             >
-                <table>
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td>Login Email</td>
-                            <td>
-                                <input
-                                    name="email"
-                                    placeholder="your@email.com"
-                                    required
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Set Password</td>
-                            <td>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    min="6"
-                                    placeholder="At least 6 characters"
-                                    required
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Your Name</td>
-                            <td>
-                                <input
-                                    name="name"
-                                    placeholder="Your name (required)"
-                                    required
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td
-                                style={{
-                                    textAlign: "right",
-                                }}
-                            >
-                                <small>
-                                    <a href="/login">
-                                        Already have an account?
-                                    </a>
-                                </small>
-                                <br />
-                                <br />
-                                <input type="submit" value="Sign Up" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h2>Sign up</h2>
+                <label for="email">Login Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    required
+                />
+
+                <label for="password">Set Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    minlength="6"
+                    placeholder="At least 6 characters"
+                    required
+                />
+
+                <label for="name">Your Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                />
+                <br />
+
+                <button type="submit">Sign Up</button>
+
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                    <small>
+                        <a href="login.html">Already have an account?</a>
+                    </small>
+                </div>
             </form>
-        </div>
+        </main>
     );
 };
 

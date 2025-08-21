@@ -21,9 +21,9 @@ const Login = () => {
     }, [navigate]);
 
     return (
-        <div>
+        <main>
             <a href="/">Back</a>
-            <h2>Login Page</h2>
+
             <form
                 action="/welcome"
                 onSubmit={(e) =>
@@ -48,6 +48,7 @@ const Login = () => {
                     })
                 }
             >
+                <h2>Login</h2>
                 <input
                     type="email"
                     name="email"
@@ -62,9 +63,9 @@ const Login = () => {
                     required
                 />
                 <br />
-                <input type="submit" value="Login" />
+                <button type="submit">Login</button>
             </form>
-        </div>
+        </main>
     );
 };
 
