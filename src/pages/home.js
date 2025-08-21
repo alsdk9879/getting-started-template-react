@@ -21,7 +21,7 @@ const Home = () => {
     }, [navigate]);
 
     return (
-        <div>
+        <main>
             <h1>Index</h1>
             <p>
                 This is a HTML template for authentication features using{" "}
@@ -36,7 +36,7 @@ const Home = () => {
             <a href="/login">Login</a>
             <span> | </span>
             <a href="/signup">Sign-Up</a>
-        </div>
+        </main>
     );
 };
 
