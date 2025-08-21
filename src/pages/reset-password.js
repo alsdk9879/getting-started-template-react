@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { skapi } from "../skapi";
 
 const ResetPassword = () => {
     const [email, setEmail] = useState("");
-    const [code, setCode] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [resendMessage, setResendMessage] = useState("");
+    const resendRef = useRef();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,8 +33,9 @@ const ResetPassword = () => {
         if (userConfirm) {
             try {
                 await skapi.forgotPassword({ email });
-                alert("Verification code has been sent.");
+                setResendMessage("Verification code has been sent.");
             } catch (err) {
+                console.log("에러콘솔 : ", err);
                 alert(err.message);
             }
         }
@@ -45,107 +44,80 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setIsLoading(true);
-        setError(null);
-
         try {
-            await skapi.resetPassword({
-                target: {
-                    elements: {
-                        email: { value: email },
-                        code: { value: code },
-                        new_password: { value: newPassword },
-                    },
-                },
-            });
-
+            await skapi.resetPassword(e.nativeEvent);
             alert("Password has been reset.");
-
             navigate("/login");
         } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
+            alert(err.message);
         }
     };
 
     return (
         <main className="reset-password">
-            <a href="/index">Back</a> <h1>Reset Password</h1>
-            <p>
-                Enter the 6 digits verification code you may have received in
-                your email and set new password below.
-            </p>
-            <p>
-                If you have not received the code, please check your spam
-                folder.
-                <br />
-                Or click <button onClick={handleResendCode}>HERE</button> to
-                resend.
-            </p>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    readOnly
-                    hidden
-                />
+            <Link to="/">Back</Link>
+            <section>
+                <h1>Reset Password</h1>
+                <p>
+                    Enter the 6 digits verification code you may have received
+                    in your email and set new password below.
+                </p>
+                <p ref={resendRef}>
+                    If you have not received the code, please check your spam
+                    folder. Or click{" "}
+                    <a
+                        href=""
+                        onClick={handleResendCode}
+                        style={{
+                            color: "blue",
+                            textDecoration: "underline",
+                        }}
+                    >
+                        HERE
+                    </a>{" "}
+                    to resend.
+                    {resendMessage && <span> {resendMessage}</span>}
+                </p>
 
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Code</td>
-                            <td>
-                                <input
-                                    type="text"
-                                    name="code"
-                                    value={code}
-                                    onChange={(e) => setCode(e.target.value)}
-                                    placeholder="6 digits code"
-                                    required
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>New Password</td>
-                            <td>
-                                <input
-                                    type="password"
-                                    name="new_password"
-                                    value={newPassword}
-                                    onChange={(e) =>
-                                        setNewPassword(e.target.value)
-                                    }
-                                    placeholder="New Password"
-                                    required
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td style={{ textAlign: "right" }}>
-                                <br />
-                                <input
-                                    type="submit"
-                                    value={
-                                        isLoading
-                                            ? "Resetting..."
-                                            : "Change Password"
-                                    }
-                                    disabled={isLoading}
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-            <p>
-                <strong>Note: </strong>
-                If your account's email address is not verified, you will not be
-                able to reset your password.
-            </p>
-            {error && <div className="error-message">{error}</div>}
+                <p>
+                    <strong>Note: </strong>
+                    If your account's email address is not verified, you will
+                    not be able to reset your password.
+                </p>
+
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="E-Mail"
+                        readOnly
+                        hidden
+                        required
+                    />
+
+                    <label htmlFor="code">Code</label>
+                    <input
+                        type="text"
+                        name="code"
+                        id="code"
+                        placeholder="6 digits code"
+                        required
+                    />
+
+                    <label htmlFor="new_password">New Password</label>
+                    <input
+                        type="password"
+                        name="new_password"
+                        id="new_password"
+                        placeholder="New Password"
+                        required
+                    />
+                    <br />
+
+                    <button type="submit">Change Password</button>
+                </form>
+            </section>
         </main>
     );
 };
