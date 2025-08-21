@@ -1,8 +1,8 @@
-import { Skapi } from "skapi-js"
+import { Skapi } from "skapi-js";
 
-const SERVICE_ID = "ap22gWhRD5uQeL7VeFEc";
-const OWNER_ID = "f8e16604-69e4-451c-9d90-4410f801c006";
+const SERVICE_ID = "ap22uU9iEzUsYtdNgi5D";
+const OWNER_ID = "bf305ace-03b5-4f9d-b88f-291458748ca3";
 
 const skapi = new Skapi(SERVICE_ID, OWNER_ID);
 
-export { skapi } 
+export { skapi };
