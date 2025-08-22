@@ -24,7 +24,6 @@ const ResetPassword = () => {
         // Then, we can set the value of the email input field for the user.
         // Email input field is hidden but it is required for the reset password method.
         const emailFromQuery = searchParams.get("email");
-        console.log("emailFromQuery : ", emailFromQuery);
 
         if (emailFromQuery) {
             setEmail(emailFromQuery);
@@ -35,7 +34,6 @@ const ResetPassword = () => {
         e.preventDefault();
 
         const currentEmail = searchParams.get("email") || email;
-        console.log("email : ", currentEmail);
 
         // When this is clicked, we will manually execute the skapi.forgotPassword() method to re-send the verification code to the user's email address.
         // When successful, we will replace the content of the parent element of this element with a message: Verification code has been sent.
