@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import {
+    useNavigate,
+    useLocation,
+    Link,
+    useSearchParams,
+} from "react-router-dom";
 import { skapi } from "../skapi";
 
 const ResetPassword = () => {
@@ -9,6 +14,7 @@ const ResetPassword = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         // The email address is passed from the forgot password page.
@@ -17,22 +23,29 @@ const ResetPassword = () => {
         // We can get the hash using location.hash.
         // Then, we can set the value of the email input field for the user.
         // Email input field is hidden but it is required for the reset password method.
-        const hashEmail = decodeURIComponent(location.hash.slice(1));
-        setEmail(hashEmail);
-    }, [location]);
+        const emailFromQuery = searchParams.get("email");
+        console.log("emailFromQuery : ", emailFromQuery);
+
+        if (emailFromQuery) {
+            setEmail(emailFromQuery);
+        }
+    }, [searchParams]);
 
     const handleResendCode = async (e) => {
         e.preventDefault();
 
+        const currentEmail = searchParams.get("email") || email;
+        console.log("email : ", currentEmail);
+
         // When this is clicked, we will manually execute the skapi.forgotPassword() method to re-send the verification code to the user's email address.
         // When successful, we will replace the content of the parent element of this element with a message: Verification code has been sent.
         const userConfirm = window.confirm(
-            `We will send a verification code to ${email}. Continue?`
+            `We will send a verification code to ${currentEmail}. Continue?`
         );
 
         if (userConfirm) {
             try {
-                await skapi.forgotPassword({ email });
+                await skapi.forgotPassword({ email: currentEmail });
                 setResendMessage("Verification code has been sent.");
             } catch (err) {
                 console.log("에러콘솔 : ", err);
